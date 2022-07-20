@@ -14,8 +14,10 @@
     </div>
 </template>
 <script lang="ts">
-    export default {
-        name:"Tags"
+import vue from 'vue';
+import {Component} from 'vue-property-decorator';
+@Component
+    export default class Tags extends vue {
     }
 </script>
 
