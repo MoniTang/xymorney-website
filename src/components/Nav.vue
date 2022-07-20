@@ -1,13 +1,12 @@
 <template>
     <nav>
-
-  <router-link to="/money" class="item" active-class="selected">
-    <Icon name="money"/>
-    记账
+    <router-link  to="/label" class="item" active-class="selected">
+        <Icon name="label"/>
+        账单
     </router-link>
-     <router-link  to="/label" class="item" active-class="selected">
-<Icon name="label"/>
-    账单
+    <router-link to="/money" class="item" active-class="selected">
+        <Icon name="money"/>
+        记账
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
         <Icon name="statistics"/>
@@ -22,11 +21,10 @@
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/style/helper.scss";
 nav{
     display: flex;
     box-shadow:0 0 4px rgb(0,0,0,0.25);
-    background: $background-nav;
+    background:  #fdf8e5;
     flex-direction: row;
     font-size: 12px;
     >.item{

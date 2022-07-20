@@ -1,7 +1,11 @@
 <template>
-<div class="app" :class="classPrefix && `${classPrefix}-app`">
-</div>
+<div class="layout-wrapper">
+<div class=content :class="`classPrefix && ${classPrefix}-content`">
+    <slot />
 
+</div>
+<Nav/>
+</div>
 </template>
 <script lang="ts">
 import Nav from "./Nav.vue";
@@ -14,13 +18,14 @@ import Nav from "./Nav.vue";
 
 <style lang="scss" scoped>
 @import "@/assets/style/helper.scss";
-.app{
-    display: flex;
+.layout-wrapper{
+    display:flex;
     flex-direction: column;
-    height:100vh ;
-    >.content{
-    overflow: auto;
+    height: 100vh;
+.content{
+    overflow: hidden;
     flex-grow: 1;
 }
 }
+
 </style>

@@ -1,12 +1,13 @@
 <template>
-    <div>
-Label
-    </div>
+<Layout>
+
+</Layout>
 </template>
 
-<script>
+<script lang="ts">
     export default {
-        name:'Label'
+    name:'Label',
+
     }
 </script>
 
