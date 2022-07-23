@@ -14,5 +14,6 @@ body{
   color: #333;
   font-size:16px;
   overflow-x:hidden;
+  background: #f5f5f5;
 }
 </style>
