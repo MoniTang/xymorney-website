@@ -1,10 +1,12 @@
 <template>
 <Layout>
 <ol class="tags" >
-    <li v-for="tag in tags" :key="tag.id">
+    <router-link class="tag"
+    v-for="tag in tags" :key="tag.id"
+    :to="`/label/edit/${tag.id}`">
         <span>{{tag.name}}</span>
         <Icon name="right"/>
-        </li>
+        </router-link>
 </ol>
 <div class="createTag-wrapper">
     <button class="createTag" @click="createTag">新建标签</button>
@@ -38,7 +40,7 @@ tagListModel.fetch();
     background: white;
     font-size: 16px;
     padding-left: 16px;
-    >li{
+    >.tag{
         min-height: 44px;
         display: flex;
         flex-direction: row;

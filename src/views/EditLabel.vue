@@ -1,13 +1,19 @@
 <template>
  <Layout>
-编辑标签
- </Layout>
+<div>
+    <Icon name="left"/>
+    <span>编辑标签</span>
+</div>
+<Note @update:value="onUpdateNote" 
+fieldName="标签名" placeholder="在这里输入标签名"/>
+</Layout>
 </template>
 <script lang="ts">
 import tagListModel from '@/models/tagListModel'
 import Vue from 'vue'
 import {Component} from 'vue-property-decorator'
-@Component
+import Note from '../components/Note.vue'
+@Component({components:{Note}})
     export default class EditLabel extends Vue{
         created(){
             const id=this.$route.params.id;
@@ -22,7 +28,10 @@ import {Component} from 'vue-property-decorator'
             }else{
             this.$router.replace('/404')
             }
-         }   
+         }
+         onUpdateNote(){
+
+         } 
     }
 </script>
 
