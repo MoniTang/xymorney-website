@@ -23,7 +23,7 @@
 import vue from 'vue';
 import {Component} from 'vue-property-decorator';
 @Component
-    export default class numberPad extends vue{
+    export default class NumberPad extends vue{
         output:string='';
         inputContent(event:MouseEvent ){
             const buttons=(event.target as HTMLButtonElement);

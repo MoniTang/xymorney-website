@@ -1,19 +1,25 @@
 <template>
  <Layout>
-<div>
-    <Icon name="left"/>
-    <span>编辑标签</span>
+<div class="navBar">
+    <Icon class="leftIcon" name="left"/>
+    <span class="title">编辑标签</span>
+    <span class="rightIcon"></span>
 </div>
-<Note @update:value="onUpdateNote" 
-fieldName="标签名" placeholder="在这里输入标签名"/>
+<div class="form-wrapper">
+    <FormItem fieldName="标签名" placeholder="在这里输入标签名"/>
+</div>
+<div class="button-wrapper">
+    <Button>删除标签</Button>
+</div>
 </Layout>
 </template>
 <script lang="ts">
 import tagListModel from '@/models/tagListModel'
 import Vue from 'vue'
 import {Component} from 'vue-property-decorator'
-import Note from '../components/Note.vue'
-@Component({components:{Note}})
+import FormItem from '../components/FormItem.vue'
+import Button from '../components/Button.vue'
+@Component({components:{FormItem,Button}})
     export default class EditLabel extends Vue{
         created(){
             const id=this.$route.params.id;
@@ -29,12 +35,31 @@ import Note from '../components/Note.vue'
             this.$router.replace('/404')
             }
          }
-         onUpdateNote(){
-
-         } 
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> 
+.navBar{
+    text-align: center;
+    padding: 12px 16px;
+    background:white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    >.title{
+    }
+}
+.form-wrapper{
+    background: white;
+    margin-top: 8px;
+}
+.button-wrapper{
+    text-align: center;
+    padding: 16px;
+    margin-top: 44-16px;
+    >Button{
+    background: red;
+    }
+}
 
 </style>
