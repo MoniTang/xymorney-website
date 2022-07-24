@@ -46,8 +46,6 @@ import Button from '../components/Button.vue'
     display: flex;
     align-items: center;
     justify-content: space-between;
-    >.title{
-    }
 }
 .form-wrapper{
     background: white;
