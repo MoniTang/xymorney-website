@@ -47,8 +47,11 @@ import Button from '../components/Button.vue'
         remove(){
             if(this.tag){
             window.alert('确认删除该标签')
-            tagListModel.remove(this.tag.id)
-            this.$router.replace('/label')
+            if(tagListModel.remove(this.tag.id)){
+                this.$router.replace('/label')
+            }else{
+                window.alert('删除失败')
+            }
             }
         }
         goBack(){
