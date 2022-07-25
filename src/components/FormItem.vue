@@ -16,7 +16,7 @@ import {Component,Prop,Watch} from 'vue-property-decorator';
     export default class FormItem extends vue{
     @Prop({required:true}) fieldName!:string;
     @Prop() placeholder?:string;
-    @Prop({default: ''})  readonly value!:string; 
+    @Prop({default: ''})  readonly value?:string; 
     onValueChanged(value:string){
         this.$emit('update:value',value);
     }

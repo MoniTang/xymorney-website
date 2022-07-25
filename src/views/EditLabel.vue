@@ -1,17 +1,18 @@
 <template>
  <Layout>
 <div class="navBar">
-    <Icon class="leftIcon" name="left"/>
+    <Icon class="leftIcon" name="left" @click.native="goBack"/>
     <span class="title">编辑标签</span>
     <span class="rightIcon"></span>
 </div>
 <div class="form-wrapper">
     <FormItem 
     :value="tag?.name"
-    fieldName="标签名" placeholder="在这里输入标签名"/>
+    fieldName="标签名" placeholder="在这里输入标签名"
+    @update:value="updateTag"/>
 </div>
 <div class="button-wrapper">
-    <Button>删除标签</Button>
+    <Button @click="remove">删除标签</Button>
 </div>
 </Layout>
 </template>
@@ -26,19 +27,34 @@ import Button from '../components/Button.vue'
         tag?:{id:string,name:string}=undefined;
         created(){
             const id=this.$route.params.id;
-            console.log(id);     
             tagListModel.fetch();
             const tags=tagListModel.data;
-            console.log(tags)
             const tag=tags.filter(t=>t.id===id)[0]
-            console.log(tag);
             if(tag){
                 this.tag=tag;
-            console.log(tag);
             }else{
             this.$router.replace('/404')
             }
          }
+        updateTag(name:string){            
+        if(this.tag){
+            const message=tagListModel.update(this.tag.id,name)
+            if(message==='duplicated'){
+                window.alert('标签名已存在')
+            }
+          }         
+        }
+        remove(){
+            if(this.tag){
+            window.alert('确认删除该标签')
+            tagListModel.remove(this.tag.id)
+            this.$router.replace('/label')
+            }
+        }
+        goBack(){
+            this.$router.back()
+
+        }
     }
 </script>
 
