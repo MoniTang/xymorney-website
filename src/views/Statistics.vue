@@ -20,11 +20,15 @@ import {Component} from 'vue-property-decorator';
 import Tabs from '../components/Tabs.vue';
 import recordTypeList from "@/constants/recordTypeList";
 import intervalList from '@/constants/intervalList'
-import store from "@/store/index2";
 
 @Component({components:{Types,Tabs}})
     export default class Statistics extends Vue{
-        recordList=store.fetchRecords();
+        get recordList(){
+            return this.$store.state.recordList;
+        }
+         beforeCreate(){
+            this.$store.commit('fetchRecords');
+            }
         type='-'
         recordTypeList=recordTypeList;
         interval='day'
