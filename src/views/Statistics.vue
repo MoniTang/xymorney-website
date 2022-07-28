@@ -7,28 +7,45 @@
       <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>
 <div>
     <ol>
-        <Li v-for="item in recordList" :key="item.id">{{item}}</Li>
+        <Li v-for="(group,index) in result" :key="index">
+        <h3>{{group.title}}</h3>
+        <ol>
+            <li v-for="(item,index) in group.items" :key="index">
+            {{item.amount}}  {{item.createdAt}}
+            </li>
+        </ol>
+        
+        </Li>
     </ol>
 </div>
 </Layout>
 </template>
 
 <script lang="ts">
-import Types from "@/components/Types.vue";
 import Vue from 'vue'
 import {Component} from 'vue-property-decorator';
 import Tabs from '../components/Tabs.vue';
 import recordTypeList from "@/constants/recordTypeList";
 import intervalList from '@/constants/intervalList'
 
-@Component({components:{Types,Tabs}})
+@Component({components:{Tabs}})
     export default class Statistics extends Vue{
         get recordList(){
-            return this.$store.state.recordList;
+            return (this.$store.state as RootState).recordList;
         }
-         beforeCreate(){
-            this.$store.commit('fetchRecords');
+        get result(){
+            const {recordList}=this;
+            const hashTable:{[key:string]:{title:string,items:RecordItem[]}}={};
+            for(let i=0;i<recordList.length;i++){
+                const [date,item]=recordList[i].createdAt!.split('T');
+                hashTable[date]=hashTable[date]||{title:date,items:[]};
+                hashTable[date].items.push(recordList[i])
             }
+            return hashTable;
+        }
+        beforeCreate(){
+             this.$store.commit('fetchRecords');
+        }
         type='-'
         recordTypeList=recordTypeList;
         interval='day'
