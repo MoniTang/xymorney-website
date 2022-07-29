@@ -1,23 +1,34 @@
 <template>
 <Layout>
-    <div class="navBar">
+    <!-- <div class="navBar">
         <span class="title">统计</span>
-    </div>
+    </div> -->
      <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"/>
       <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>
-<div>
-    <ol>
-        <Li v-for="(group,index) in result" :key="index">
-        <h3>{{group.title}}</h3>
+    <ol class="statistics-List">
+        <li v-for="(group,index) in result" :key="index">
+        <h3 class="group-title">{{group.title}}</h3>
         <ol>
-            <li v-for="(item,index) in group.items" :key="index">
-            {{item.amount}}  {{item.createdAt}}
+            <li v-for="(item,index) in group.items" :key="index"
+            class="record">
+            <span>{{tagString(item.tags )}}</span>
+            <span class="item-notes">{{item.notes}}</span>
+            <span>￥{{item.amount}}</span>
             </li>
         </ol>
-        
-        </Li>
+        </li>
+          <li v-for="(group,index) in result" :key="index">
+        <h3 class="group-title">{{group.title}}</h3>
+        <ol>
+            <li v-for="(item,index) in group.items" :key="index"
+            class="record">
+            <span>{{tagString(item.tags )}}</span>
+            <span class="item-notes">{{item.notes}}</span>
+            <span>￥{{item.amount}}</span>
+            </li>
+        </ol>
+        </li>
     </ol>
-</div>
 </Layout>
 </template>
 
@@ -30,6 +41,9 @@ import intervalList from '@/constants/intervalList'
 
 @Component({components:{Tabs}})
     export default class Statistics extends Vue{
+        tagString(tags:string[]){
+            return tags.length===0?'无':tags.join(',')
+        }
         get recordList(){
             return (this.$store.state as RootState).recordList;
         }
@@ -56,6 +70,30 @@ import intervalList from '@/constants/intervalList'
 </script>
 
 <style lang="scss" scoped>
+%item{
+   padding: 8px 16px;
+    line-height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+.statistics-List{
+    overflow:auto;
+    .group-title{
+    @extend %item;
+}
+.record{ 
+    background: white;
+    @extend %item
+}
+.item-notes{
+    margin-right:auto ;
+    margin-left: 16px;
+    color: #999;
+}
+
+}
+
 .navBar{
     text-align: center;
     padding: 12px 16px;
@@ -65,7 +103,6 @@ import intervalList from '@/constants/intervalList'
     justify-content: center;
 }
  ::v-deep ul{
-    margin-bottom: 8px;
     background: #eee !important;
     .type-tabs-item{
         height: 40px;
@@ -82,6 +119,7 @@ import intervalList from '@/constants/intervalList'
         height:28px;
         background: white;
         margin: 0 4px;
+        margin-top: 8px;
         &.selected{
         background: #c4c4c4;
         &::after{
