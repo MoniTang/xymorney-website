@@ -1,13 +1,12 @@
 <template>
-<Layout>
+<Layout class-prefix="statistics">
     <div class="navBar">
         <span class="title">统计</span>
     </div>
      <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"/>
-      <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"/>
-    <ol class="statistics-List">
+    <ol class="statistics-list">
         <li v-for="(group,index) in groupedList" :key="index">
-        <h3 class="group-title">{{beautify(group.title)}}</h3>
+        <h3 class="group-title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
         <ol>
             <li v-for="(item,index) in group.items" :key="index"
             class="record">
@@ -26,7 +25,6 @@ import Vue from 'vue'
 import {Component} from 'vue-property-decorator';
 import Tabs from '../components/Tabs.vue';
 import recordTypeList from "@/constants/recordTypeList";
-import intervalList from '@/constants/intervalList'
 import dayjs from 'dayjs'
 import clone from '@/lib/clone';
 
@@ -51,12 +49,13 @@ import clone from '@/lib/clone';
             return (this.$store.state as RootState).recordList;
         }
         get groupedList(){
+            type Result={title:string,total?:number,items:RecordItem[]}[]
             const {recordList}=this;
             if(recordList.length===0){return [];}
-            const newList=clone(recordList)
+            const newList=clone(recordList).filter(t=>t.type===this.type)
             .sort((a,b)=>dayjs(b.createdAt).valueOf()
             -dayjs(a.createdAt).valueOf())
-            const result=[{title:dayjs(newList[0].createdAt).format('YYYY-MM-DD'),items:[newList[0]]}]
+            const result:Result=[{title:dayjs(newList[0].createdAt).format('YYYY-MM-DD'),items:[newList[0]]}]
             for(let i=0;i<newList.length;i++){
             const current=newList[i]
             const last=result[result.length-1]          
@@ -65,22 +64,29 @@ import clone from '@/lib/clone';
             }else{
                 result.push({title:dayjs(current.createdAt).format('YYYY-MM-DD'),items:[current]});
             }
-            }
+        }
+            result.map(group => {
+            group.total = group.items.reduce((sum, item) => {
+                return sum + item.amount;
+                 }, 0);
+            });
             return result;
         }
-
         beforeCreate(){
              this.$store.commit('fetchRecords');
         }
         type='-'
         recordTypeList=recordTypeList;
-        interval='day'
-        intervalList=intervalList;
-
-    
 }
 </script>
 
+<style lang="scss">
+.statistics-content{
+     display: flex;
+     flex-direction: column;
+}
+
+</style>
 <style lang="scss" scoped>
 %item{
    padding: 8px 16px;
@@ -89,8 +95,9 @@ import clone from '@/lib/clone';
     justify-content: space-between;
     align-content: center;
 }
-.statistics-List{
+.statistics-list{
     overflow:auto;
+    flex-grow: 1;
     .group-title{
     @extend %item;
 }
@@ -126,19 +133,6 @@ import clone from '@/lib/clone';
         }
     }
 }
-    .interval-tabs-item {
-        font-size:16px;
-        height:28px;
-        background: white;
-        margin: 0 4px;
-        margin-top: 8px;
-        &.selected{
-        background: #c4c4c4;
-        &::after{
-            display: none;
-          }
-        }
-    }   
 }
 
 </style>

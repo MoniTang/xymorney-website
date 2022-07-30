@@ -1,5 +1,5 @@
 <template>
-<Layout>
+<Layout class-prefix="label">
     <div class="navBar">
         <span class="title">标签管理</span>
     </div>
@@ -37,7 +37,12 @@ import TagHelper from '@/mixins/TagHelper';
 
 };
 </script>
-
+<style lang="scss">
+.label-content{
+    display: flex;
+    flex-direction: column;
+}
+</style>
 <style lang="scss" scoped>
 .navBar{
     text-align: center;
@@ -52,6 +57,8 @@ import TagHelper from '@/mixins/TagHelper';
     background: white;
     font-size: 16px;
     padding-left: 16px;
+    overflow: auto;
+    flex-grow: 1;
     >.tag{
         min-height: 44px;
         display: flex;
