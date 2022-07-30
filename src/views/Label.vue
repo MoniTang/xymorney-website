@@ -21,7 +21,6 @@
 </Layout>
 </template>
 <script lang="ts">
-import Vue, { computed } from 'vue';
 import {Component} from 'vue-property-decorator';
 import Button from '@/components/Button.vue';
 import { mixins } from 'vue-class-component';
@@ -54,12 +53,12 @@ import TagHelper from '@/mixins/TagHelper';
 }
 .tags{
     margin-top: 8px;
-    background: white;
     font-size: 16px;
-    padding-left: 16px;
     overflow: auto;
     flex-grow: 1;
     >.tag{
+    padding-left: 16px;
+    background: white;
         min-height: 44px;
         display: flex;
         flex-direction: row;

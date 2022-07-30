@@ -4,7 +4,7 @@
         <span class="title">统计</span>
     </div>
      <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="type"/>
-    <ol class="statistics-list">
+    <ol class="statistics-list" v-if="groupedList.length>0">
         <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="group-title">{{beautify(group.title)}}<span>￥{{group.total}}</span></h3>
         <ol>
@@ -17,6 +17,7 @@
         </ol>
         </li>
     </ol>
+    <div v-else class="noResult">目前没有相关记录</div>
 </Layout>
 </template>
 
@@ -43,7 +44,7 @@ import clone from '@/lib/clone';
             }
         }
         tagString(tags:Tag[]){
-            return tags.length===0?'无':tags.join(',')
+            return tags.length===0?'无':tags.map(t => t.name).join(',');
         }
         get recordList(){
             return (this.$store.state as RootState).recordList;
@@ -51,14 +52,14 @@ import clone from '@/lib/clone';
         get groupedList(){
             type Result={title:string,total?:number,items:RecordItem[]}[]
             const {recordList}=this;
-            if(recordList.length===0){return [];}
             const newList=clone(recordList).filter(t=>t.type===this.type)
             .sort((a,b)=>dayjs(b.createdAt).valueOf()
-            -dayjs(a.createdAt).valueOf())
-            const result:Result=[{title:dayjs(newList[0].createdAt).format('YYYY-MM-DD'),items:[newList[0]]}]
-            for(let i=0;i<newList.length;i++){
-            const current=newList[i]
-            const last=result[result.length-1]          
+            -dayjs(a.createdAt).valueOf());
+            if(newList.length===0){return [];}
+            const result:Result=[{title:dayjs(newList[0].createdAt).format('YYYY-MM-DD'),items:[newList[0]]}];
+            for(let i=1;i<newList.length;i++){
+            const current=newList[i];
+            const last=result[result.length-1] ;         
             if(dayjs(last.title).isSame(dayjs(current.createdAt),'day')){
                 last.items.push(current);
             }else{
@@ -75,7 +76,7 @@ import clone from '@/lib/clone';
         beforeCreate(){
              this.$store.commit('fetchRecords');
         }
-        type='-'
+        type='-';
         recordTypeList=recordTypeList;
 }
 </script>
@@ -95,9 +96,15 @@ import clone from '@/lib/clone';
     justify-content: space-between;
     align-content: center;
 }
+   .noResult {
+    color: #555;
+    padding: 16px;
+    text-align: center;
+  }
 .statistics-list{
     overflow:auto;
     flex-grow: 1;
+ 
     .group-title{
     @extend %item;
 }
