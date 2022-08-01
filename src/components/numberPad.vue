@@ -45,8 +45,7 @@ import {Component, Prop} from 'vue-property-decorator';
         clear(){
             this.output='0'
          }
-        ok(){
-            if(this.output==='0'||this.output===null){return ;}
+        ok(){   
             const number=parseFloat(this.output);
             this.$emit('update:value',number);
             this.$emit('submit',number);

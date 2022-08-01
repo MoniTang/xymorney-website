@@ -43,10 +43,15 @@ import Button from '../components/Button.vue'
         }
         remove(){
             if(this.tag){
-                this.$store.commit('removeTag',this.tag.id)
-                window.alert('删除成功')
+                const result=window.confirm('确认删除该标签');
+                console.log(result);
+                if(result===true){
+                this.$store.commit('removeTag',this.tag.id);
+                this.$router.replace('/label')  ;
+                }else{
+                    return ;
                 }
-                this.$router.replace('/label')                  
+                }               
             }
 
         goBack(){

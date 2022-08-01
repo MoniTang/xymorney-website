@@ -32,7 +32,13 @@ import {Component, Watch} from 'vue-property-decorator';
         this.record.amount=parseFloat(value);
     }
     saveRecord(){
-     this.$store.commit('createRecord',this.record)
+
+        if(!this.record.tags||this.record.tags.length===0){
+            return window.alert('请选择一个标签')}
+        if(!this.record.amount||this.record.amount===0||this.record.amount===null){
+            return window.alert('金额不能为空')}
+            
+        this.$store.commit('createRecord',this.record)
         if(this.$store.state.createRecordError===null){
             window.alert('已保存');
             this.record.notes=''

@@ -14,7 +14,6 @@
 </template>
 <script lang="ts">
 import TagHelper from '@/mixins/TagHelper';
-import vue from 'vue';
 import { mixins } from 'vue-class-component';
 import {Component, Prop} from 'vue-property-decorator';
 
@@ -59,7 +58,7 @@ import {Component, Prop} from 'vue-property-decorator';
             background:#d9d9d9;
             $h:24px;
             height: $h;
-            border-radius:$h/2;
+            border-radius:($h/2);
             padding: 0 16px;
             margin-right: 12px;
             line-height: $h;
